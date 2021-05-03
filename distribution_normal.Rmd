@@ -1,0 +1,274 @@
+---
+title: "Normal distribution"
+author: "Jörg Sahlmann"
+date: "03.05.2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+```
+
+## Probability Density function
+
+Normal distribution with $\mu = 0$ and $\sigma = 1$.
+
+$$\varphi (x) = \frac{e^{-\frac{x^2}{2}}}{\sqrt(2\pi)} $$
+
+
+```{r }
+
+x <- seq(-4, 4, by = 0.1)
+y <- dnorm(x)
+y2 <- pnorm(x)
+
+plotdat <- tibble(x, y, y2)
+
+ggplot(plotdat, aes(x = x, y = y)) +
+  geom_line() +
+  ggtitle("Probability Density Function", subtitle = "Normal distribution") +
+  ylab("Density")
+
+```
+
+## Cumulative Density Function
+
+Normal distribution with $\mu = 0$ and $\sigma = 1$.
+
+
+$$ \Phi (x) = \frac{1}{\sqrt(2\pi)} \int_{-\infty}^{x} e^{-t^2/2} \ dt$$
+
+
+```{r pressure}
+
+ggplot(plotdat, aes(x = x, y = y2)) +
+  geom_line() +
+  ggtitle("Probability Density Function", subtitle = "Normal distribution") +
+  ylab("Density")
+
+```
+
+
+## Probability Density function with tails
+
+### One-sided
+
+
+```{r}
+
+tr <- qnorm(0.95)
+
+ggplot(plotdat, aes(x = x, y = y)) +
+  geom_area(data = plotdat %>% filter(x < tr), color = "black", fill = "lightgreen") +
+  annotate("text", x = 0, y = 0.2, label = "95%") +
+  geom_line() +
+  ggtitle("Probability Density Function", subtitle = "Normal distribution") +
+  ylab("Density")
+
+
+```
+
+### Two-sided
+
+
+```{r}
+
+tl <- qnorm(0.025)
+tr <- qnorm(0.975)
+
+ggplot(plotdat, aes(x = x, y = y)) +
+  geom_area(data = plotdat %>% filter(x >= tl & x <= tr), color = "black", fill = "lightgreen") +
+  annotate("text", x = 0, y = 0.2, label = "95%") +
+  geom_line() +
+  ggtitle("Probability Density Function", subtitle = "Normal distribution") +
+  ylab("Density")
+
+
+```
+
+
+## Quantiles for probability density function
+
+Which x-values represent 25%, 50% and 75% probability for the normal distribution?
+
+
+```{r}
+
+t1 <- qnorm(0.25)
+t2 <- qnorm(0.50)
+t3 <- qnorm(0.75)
+
+c(t1, t2, t3)
+
+ggplot(plotdat, aes(x = x, y = y)) +
+  geom_area(data = plotdat %>% filter(x <= t1), color = "black", fill = "grey", alpha = 0.25) +
+  annotate("text", x = t1, y = 0.1, label = "25%", hjust = 1) +
+  geom_area(data = plotdat %>% filter(x <= t2), color = "black", fill = "grey", alpha = 0.25) +
+  annotate("text", x = t2, y = 0.15, label = "50%", hjust = 1) +
+  geom_area(data = plotdat %>% filter(x <= t3), color = "black", fill = "grey", alpha = 0.25) +
+  annotate("text", x = t3, y = 0.2, label = "75%", hjust = 1) +
+  geom_line() +
+  ggtitle("Probability Density Function", subtitle = "Normal distribution") +
+  ylab("Density")
+
+
+
+```
+
+
+## Rule of thumb
+
+### Calculation
+
+Rule of thumb for distribution of observations:
+
+```{r}
+
+sd1 <- pnorm(1) - pnorm(-1)
+sd2 <- pnorm(2) - pnorm(-2)
+sd3 <- pnorm(3) - pnorm(-3)
+
+
+```
+
+`r round(sd1*100, 1)`% of the observations are within $\pm 1$ standard deviation around the mean.
+
+`r round(sd2*100, 1)`% of the observations are within $\pm 2$ standard deviation around the mean.
+
+`r round(sd3*100, 1)`% of the observations are within $\pm 3$ standard deviation around the mean.
+
+
+## Examples
+
+### Example 1
+
+Questionnaire scores are distributed nearly normally with mean 150 and standard deviation 30.
+
+  - about 68.3% of the scores are between 120 and 180
+  - about 95.4% of the scores are between 90 and 210
+  - about 99.7% of the scores are between 60 and 240
+
+
+### Example 2
+
+To compare two results from different tests with different means and standard deviations the results have to be standardized.
+
+$$ Z = \frac{observation - mean}{SD} $$
+
+Test A scores are nearly distributed with mean 150 and standard deviation 30. Test B scores are nearly distributed with mean 22 and standard deviation 6.
+
+Student 1 has a result of 170 on test A, student 2 has a result of 25 on test B.
+
+Which result is further from the mean?
+
+```{r}
+
+r1 <- (170 - 150) / 30
+r2 <- (25 - 22) / 6
+
+ggplot(plotdat, aes(x = x, y = y)) +
+  geom_line() +
+  geom_vline(xintercept = r1, color = "red") +
+  annotate("text", x = r1 + 0.1, y = 0.4, label = "Student 1", color = "red", hjust = 0) +
+  geom_vline(xintercept = r2, color = "blue") +
+  annotate("text", x = r2 + 0.1, y = 0.3, label = "Student 2", color = "blue", hjust = 0) +
+  ggtitle("Probability Density Function", subtitle = "Normal distribution") +
+  ylab("Density")
+
+
+
+```
+
+The result of student 1 is further from the mean.
+
+
+### Example 3
+
+A machine produces screws 400 mm long with a standard deviation of 9 mm. The length of the screws can be viewed as normally distributed.
+
+#### Part 1
+
+Calculate the probability that a screw is shorter than 385 mm.
+
+```{r}
+
+z <- (385 - 400) / 9
+pz <- pnorm(z)
+pz
+
+```
+The probability that a screw is shorter than 385 mm is `r round(pz*100, 1)`%.
+
+#### Part 2
+
+Calculate the probability that a screw is between 395 and 405 mm.
+
+```{r}
+
+zl <- (395 - 400) / 9
+zr <- (405 - 400) / 9
+pzl <- pnorm(zl)
+pzr <- pnorm(zr)
+pz <- pzr - pzl
+pz
+
+```
+
+The probability that a screw is shorter between 395 and 405 mm is `r round(pz*100, 1)`%.
+
+#### Part 3
+
+Calculate the probability that the length of the screw deviates more than one standard deviation from the mean in either direction.
+
+```{r}
+
+pzl <- pnorm(-1)
+pzr <- pnorm(1)
+pz <- (1 - pzr) + pzl
+pz
+
+```
+
+
+## Testing for normality
+
+### Constructing a normal probability plot (QQ-plot)
+
+```{r}
+
+x <- c(3.41, 4.01, 5.08, 2.32, 6.46)
+x <- sort(x)
+pc <- seq(1, length(x))
+pc <- pc / (length(x) + 1)
+z <- qnorm(pc)
+
+plotdat <- tibble(x, pc, z)
+
+ggplot(plotdat, aes(x = z, y = x)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y ~x)
+
+
+```
+
+### QQ-plot with provided plots
+
+```{r}
+
+ggplot(plotdat, aes(sample = x)) + 
+  geom_qq() +
+  geom_qq_line() +
+  ggtitle("QQ-plot") +
+  xlab("Theoretical") +
+  ylab("Sample")
+
+```
+
+
+
+

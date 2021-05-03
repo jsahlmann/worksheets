@@ -1,0 +1,33 @@
+---
+title: "CLT and standard error"
+author: "JSA"
+date: "3 5 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+
+```
+
+## CLT for means
+
+The distribution of sample statistics is nearly normal, centered at the population mean, and with a standard deviation equal to the population standard deviation divided by square root of the sample size.
+
+$$ \bar{x} \sim N \left(mean = \mu, SE = \frac{\sigma}{\sqrt{n}} \right) $$
+
+
+```{r}
+
+
+
+```
+
+## CLT for proportions
+
+The distribution of sample proportions is nearly normal, centered at the population proportion, and with a standard error inversely proportional to the sample size.
+
+
+$$ \hat{p} \sim N\left(mean = p, SE = \sqrt{  \frac{p(1-p)}{n}  } \right) $$
