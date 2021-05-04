@@ -18,6 +18,7 @@ The distribution of sample statistics is nearly normal, centered at the populati
 
 $$ \bar{x} \sim N \left(mean = \mu, SE = \frac{\sigma}{\sqrt{n}} \right) $$
 
+The standard error of the mean is $\frac{\sigma}{\sqrt{n}}$.
 
 ```{r}
 
@@ -31,3 +32,5 @@ The distribution of sample proportions is nearly normal, centered at the populat
 
 
 $$ \hat{p} \sim N\left(mean = p, SE = \sqrt{  \frac{p(1-p)}{n}  } \right) $$
+
+The standard error of a proportion is  $\sqrt{  \frac{\hat{p}(1-\hat{p})}{n}  }$

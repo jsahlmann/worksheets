@@ -1,0 +1,82 @@
+---
+title: "Tests for means"
+author: "Jörg Sahlmann"
+date: "04.05.2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+```
+
+# One mean
+
+## t-test
+
+$H_0: \mu = \mu_0$
+
+
+### Alternative 1
+
+$H_{A1}: \mu > \mu_0$
+
+Reject $H_0$ if the following condition is met:
+
+$\hat{t} = \frac{\bar{x} - \mu_0}{s} \sqrt{n} > t_{n-1; 1-\alpha}$
+
+p is the area under the $t_{n-1}$ distribution right of $\hat{t}$.
+
+#### Example
+
+The temperature in an incubator shall have more than 37°C. The following temperatures have been measured:
+
+36.9 37.3 37.6 37.1 37.0 37.5 37.5 37.9
+
+```{r}
+
+t_temp <- c(36.9, 37.3, 37.6, 37.1, 37.0, 37.5, 37.5, 37.9)
+t.test(t_temp, alternative = "greater", mu = 37)
+
+```
+
+The temperature is significantly higher than 37°C.
+
+
+### Alternative 2
+
+$H_{A2}: \mu < \mu_0$
+
+
+### Alternative 3
+
+$H_{A3}: \mu \ne \mu_0$
+
+
+```{r}
+
+
+```
+
+
+# Two means
+
+
+```{r}
+
+
+```
+
+
+# More than two means
+
+
+```{r}
+
+
+```
+
