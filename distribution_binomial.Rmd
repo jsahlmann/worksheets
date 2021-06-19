@@ -1,0 +1,41 @@
+---
+title: "Binomial distribution"
+author: "Jörg Sahlmann"
+date: "11.05.2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+```
+
+## Distribution
+
+```{r}
+
+x <- seq(0:50)
+y <- dbinom(x, 50, 0.4)
+y2 <- dbinom(x, 40, 0.6)
+
+plot_data <- data.frame(x, y, y2)
+
+ggplot(data = plot_data) +
+  geom_point(aes(x = x, y = y)) + 
+  geom_line(aes(x = x, y = y)) + 
+  geom_segment(aes(x = x, xend = x, y = 0, yend = y), color = "blue", alpha = 0.5) +
+  geom_point(aes(x = x, y = y2)) + 
+  geom_line(aes(x = x, y = y2)) + 
+  geom_segment(aes(x = x, xend = x, y = 0, yend = y2), color = "red", alpha = 0.5) +
+  annotate("text", x = 40, y = 0.1, label = "Verteilung 1", color = "blue", hjust = 0) +
+  ggtitle("Verteilungsbeispiel", subtitle = "Binomial") +
+  xlab("Success") +
+  ylab("Density")
+
+
+```
+
