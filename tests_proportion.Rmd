@@ -106,9 +106,39 @@ $Z = \frac{\hat{p} - p}{SE}$, $SE = \sqrt{\frac{p (1-p)}{n}}$
 5. Make a decision, and interpret it in the context of the research question
 
 
+## Goodness of fit
+
+chi-square ($\chi^2$) statistic
+
+$\chi^2 =  \sum_\limits{i=1}^k \frac{(O-E)^2}{E}$
+
+and $df = k - 1$
+
+with
+
+  - O: observed
+  - E: expected
+  - k: number of cells
+  
+```{r}
+
+pop <- c(80.29, 12.06, 0.79, 2.92, 3.94)
+expected <- c(2007, 302, 20, 73, 98)
+observed <- c(1920, 347, 19, 84, 130)
+
+chi2 <- (observed - expected)**2/expected
+sumchi2 <- sum(chi2)
+sumchi2
+
+pchisq(22.63, 4, lower.tail = FALSE)
+
+```
+
+
+
 # Two proportions
 
-## Difference of proportions
+## Confidence interval for difference of proportions
 
 Parameter of interest is the difference of proportions between all of respective elements from the population.
 
@@ -125,7 +155,7 @@ $SE = \sqrt{\frac{\hat{p_1} (1 - \hat{p_1})}{n_1} + \frac{\hat{p_2} (1 - \hat{p_
 
 One group of students and one group of hunters was asked about shooting as private sport.
 
-750 of 950 hunters said yes, 110 of 550 students said yes. Is there a signifcant difference?
+750 of 950 hunters said yes, 110 of 550 students said yes. Is there a significant difference?
 
 ```{r}
 
@@ -140,12 +170,71 @@ cir <- (p1 - p2) + 1.96 * sqrt((p1 * (1 - p1)/n1) + (p2 * (1 - p2)/n2))
 cil
 cir
 
-prop.test(x = c(750, 110), n = c(950, 550))
+#prop.test(x = c(750, 110), n = c(950, 550))
 
 ```
+The confidence interval for the difference of proportions is [`r round(cil, 2)`, `r round(cir, 2)`].
 
 The difference of the proportions differs significantly from zero.
 
+
+## Hypothesis testing for two proportions
+
+Pooled proportion
+
+$\hat{p}_{pool} = \frac{total \ successes}{total \ n}$
+$\hat{p}_{pool} = \frac{number\ of \ successes_1 + number \ of \ successes_2}{n_1 + n_2}$
+
+
+Success-failure condition
+
+  - $n_1\hat{p}_{pool} \ge 10$
+  - $n_1(1- \hat{p}_{pool}) \ge 10$
+  - $n_2\hat{p}_{pool} \ge 10$
+  - $n_2(1- \hat{p}_{pool}) \ge 10$
+
+Standard error
+
+$SE = \sqrt{\frac{\hat{p}_{pool} (1 - \hat{p}_{pool})}{n_1} + \frac{\hat{p}_{pool} (1 - \hat{p}_{pool})}{n_2}}$
+
+
+Hypothesis
+
+  - $H_0: p_1 = p_2$
+  - $H_A: p_1 \ne p_2$
+
+
+$(\hat{p}_1 - \hat{p}_2) \sim N\left(mean = 0, SE = \sqrt{\frac{\hat{p}_{pool} (1 - \hat{p}_{pool})}{n_1} + \frac{\hat{p}_{pool} (1 - \hat{p}_{pool})}{n_2}} \right)$
+
+
+$Z = \frac{(\hat{p}_1 - \hat{p}_2) - null \ value}{SE}$
+
+
+## Independence test
+
+chi-square ($\chi^2$) statistic
+
+$\chi^2 =  \sum_\limits{i=1}^k \frac{(O-E)^2}{E}$
+
+and $df = (R - 1) (C - 1)$
+
+with
+
+  - O: observed
+  - E: expected
+  - k: number of cells
+  - R: number of rows
+  - C: number of columns
+  
+  
+$expected \ count = \frac{(row \ total) \times (column \ total)}{table \ total}$
+
+```{r}
+
+
+pchisq(31.68, 2, lower.tail = FALSE)
+
+```
 
 
 # More than two proportions

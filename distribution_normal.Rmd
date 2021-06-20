@@ -20,6 +20,10 @@ Normal distribution with $\mu = 0$ and $\sigma = 1$.
 
 $$\varphi (x) = \frac{e^{-\frac{x^2}{2}}}{\sqrt(2\pi)} $$
 
+Normal distribution with $\mu \ne 0$ and $\sigma \ne 1$.
+
+$$\varphi(x) = \frac{1}{\sigma\sqrt{2\pi}}\, \mathrm{e}^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}$$
+
 
 ```{r }
 
@@ -42,6 +46,12 @@ Normal distribution with $\mu = 0$ and $\sigma = 1$.
 
 
 $$ \Phi (x) = \frac{1}{\sqrt(2\pi)} \int_{-\infty}^{x} e^{-t^2/2} \ dt$$
+
+Normal distribution with $\mu \ne 0$ and $\sigma \ne 1$.
+
+$$\Phi(x) = \frac {1}{\sigma \sqrt{2\pi}} \cdot \int_{-\infty}^{x} \mathrm{e}^{-\frac{1}{2} \cdot \left(\frac{t-\mu}{\sigma}\right)^2} \mathrm{d}t$$
+
+
 
 
 ```{r pressure}

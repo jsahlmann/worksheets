@@ -14,7 +14,11 @@ library(tidyverse)
 library(ggplot2)
 ```
 
-## Distribution
+## Binomial distribution
+
+### Several ggplot-elements used
+
+In the following figure the probabilities of x successes in n trials will be depicted as dots and lines. 
 
 ```{r}
 
@@ -36,6 +40,56 @@ ggplot(data = plot_data) +
   xlab("Success") +
   ylab("Density")
 
+
+```
+
+### x successes in n trials
+
+In the following figure the probabilities of x successes in n trials will be depicted as histogram. 
+
+```{r}
+# Idea from https://rpubs.com/mpfoley73/458411
+
+plot_data <- data.frame(heads = 0:10, prob = dbinom(x = 0:10, size = 10, prob = 0.3))
+plot_data$Heads <- ifelse(plot_data$heads == 2, "2", "other")
+
+ggplot(data = plot_data, aes(x = factor(heads), y = prob, fill = Heads)) +
+  geom_col() +
+  geom_text(
+    aes(label = round(prob,2), y = prob + 0.01),
+    position = position_dodge(0.9),
+    size = 3,
+    vjust = 0
+  ) +
+  labs(title = "Probability of X = 2 successes.",
+       subtitle = "B(X|n = 10, p = 0.3)",
+       x = "Successes (x)",
+       y = "Probability") 
+
+```
+
+### Zero to x successes in n trials
+
+In the following figure the probabilities of x successes in n trials will be depicted as histogram. 
+
+```{r}
+# Idea from https://rpubs.com/mpfoley73/458411
+
+plot_data <- data.frame(heads = 0:10, prob = dbinom(x = 0:10, size = 10, prob = 0.3))
+plot_data$Heads <- ifelse(plot_data$heads <= 2, "<= 2", "other")
+
+ggplot(data = plot_data, aes(x = factor(heads), y = prob, fill = Heads)) +
+  geom_col() +
+  geom_text(
+    aes(label = round(prob,2), y = prob + 0.01),
+    position = position_dodge(0.9),
+    size = 3,
+    vjust = 0
+  ) +
+  labs(title = "Probability of X <= 2 successes.",
+       subtitle = "B(X|n = 10, p = 0.3)",
+       x = "Successes (x)",
+       y = "Probability") 
 
 ```
 
